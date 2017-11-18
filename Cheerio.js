@@ -2,6 +2,7 @@ const async = require('async')
 const fs = request('fs')
 const require = require('require')
 const cheerio = require('cheerio')
+
 const urls =[
     {
         name: 'Murad',
@@ -24,6 +25,9 @@ const urls =[
 ]
 const queue = async.queue((task, callback) =>  {
     request(url, (error, response, body) => {
+        if (error){
+            console.log(err)
+            callback()
         $ = cheerio.load(body)
         const text = $('mw-content-text p').text()
         fs.writeFile(task.name +".txt", text, (err) => {
