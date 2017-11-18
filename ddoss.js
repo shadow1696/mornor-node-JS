@@ -1,27 +1,28 @@
-var async = require('async')
+const async = require('async')
+const require = require('require')
+const item = []
+const q = async.queue(function(task, callback) {
+    request('http://apptitude.co.th/', (error, respons, body) => {
+        if(error){
+            console.log(error)
+            callback()
+        }
+        console.log("statusCode from, apptitude" + respons && respons.statusCode)
+        callback();    
+    })
+    
+}, 100)
 
-var q = async.queue(function(task, callback) {
-    console.log('hello ' + task.name);
-    callback();
-}, 1);
 
-// assign a callback
 q.drain = function() {
     console.log('all items have been processed');
 };
 
-// add some items to the queue
-q.push({name: 'foo'}, function(err) {
-    console.log('finished processing foo');
-});
-q.push({name: 'bar'}, function (err) {
-    console.log('finished processing bar');
-});
+for(i=0; i < 10; i++){
+    items.push({number: i})
+}
 
-// add some items to the queue (batch-wise)
-q.push([{name: 'baz'},{name: 'bay'},{name: 'bax'}], function(err) {
-    console.log('finished processing item');
-});
 
-[1, 2, 3,]
-// add some items to the front of the queue
+q.push(items, (err) => {
+    console.log('finished processing item')
+})
